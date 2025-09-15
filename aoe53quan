@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>AOE Overlay</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #00FF00; /* Nền xanh để key trong OBS */
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  /* Thanh trên cùng */
+  .top-bar {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    color: #fff;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+
+  .player-box {
+    flex: 1;
+    background: linear-gradient(135deg, #3a007d, #001f4d);
+    border: 2px solid #ffffff55;
+    border-radius: 0;
+    padding: 6px 20px;
+    text-align: center;
+    box-shadow: 0 0 12px rgba(0,0,0,0.7);
+  }
+
+  .player-box input {
+    font-size: 24px;
+    padding: 4px 10px;
+    border: none;
+    border-radius: 0;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1.5px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    min-width: 140px;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(255,255,255,0.6);
+  }
+
+  /* khoảng trống giữa (notch) */
+  .middle-gap {
+    width: 160px;
+    height: 70px;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* tạo notch lượn lên */
+  .middle-gap::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background: #00FF00; /* nền key */
+    border-radius: 0 0 80px 80px;
+  }
+
+  /* Bảng quân ở dưới */
+  .bottom-box {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 6px;
+    background: #0a2a0a;
+    padding: 10px;
+    border-radius: 0;
+    border: 2px solid #ffffff33;
+  }
+
+  .player select {
+    font-size: 18px;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 0;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: #fff;
+    min-width: 200px;
+  }
+
+  /* Màu từng COM */
+  .com1 select { background: #000080; color: #fff; }  /* xanh biển đậm */
+  .com2 select { background: #b30000; color: #fff; }  /* đỏ */
+  .com3 select { background: #e6c300; color: #000; }  /* vàng */
+  .com4 select { background: #5a2d0c; color: #fff; }  /* nâu */
+  .com5 select { background: #ff6600; color: #fff; }  /* cam */
+  .com6 select { background: #ff66cc; color: #fff; }  /* hồng */
+  .com7 select { background: #999999; color: #000; }  /* bạc xám */
+  .com8 select { background: #3399ff; color: #fff; }  /* xanh dương */
+</style>
+</head>
+<body>
+
+  <!-- Thanh trên cùng -->
+  <div class="top-bar">
+    <div class="player-box">
+      <input type="text" id="p1Name" value="Player A">
+    </div>
+    <div class="middle-gap"></div>
+    <div class="player-box">
+      <input type="text" id="p2Name" value="Player B">
+    </div>
+  </div>
+
+  <!-- Bảng quân dưới cùng -->
+  <div class="bottom-box" id="players"></div>
+
+<script>
+  const civs = [
+    "Egyptian","Greek","Babylonian","Assyrian","Minoan","Hittite","Phoenician","Sumerian",
+    "Sasanian","Shang","Yamato","Choson","Roman","Carthaginian","Palmyrene","Macedonian",
+    "Israelite","Thracian","Atlantean","Trojan","Parthian","Aksumite","Gallic","Indus_Valley",
+    "Sa_Huynh","Han","Philistine","Baekje","Zhou","Iberian","Nok","Xiongnu",
+    "Bactrian","Elamite","Cyrenean","Dravidian","Celt","Scythian","Germanic","Urartian",
+    "Van_Lang","Kushite","Illyrian","Pontic","Numidian","Dilmunite","Mauryan","Jomon",
+    "Achaemenid","Etruscan","Seleucid","Ptolemaic","Mitanni"
+  ];
+
+  function createCivOptions() {
+    return civs.map(c => `<option value="${c}">${c}</option>`).join("");
+  }
+
+  const numPlayers = 8;
+  const container = document.getElementById("players");
+  for (let i = 1; i <= numPlayers; i++) {
+    container.innerHTML += `
+      <div class="player com${i}">
+        <select>
+          <option value="random">RANDOM</option>
+          ${createCivOptions()}
+        </select>
+      </div>
+    `;
+  }
+</script>
+
+</body>
+</html>
